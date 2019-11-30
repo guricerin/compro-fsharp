@@ -355,5 +355,7 @@ MigrationBackup/
 
 # End of https://www.gitignore.io/api/visualstudio
 
+!.gitkeep
 .ionide/
 .vscode/
+.src/Solution/Solutions/
