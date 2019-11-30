@@ -7,6 +7,5 @@ module Cin =
 
 [<EntryPoint>]
 let main _ =
-    let s = read string
-    Seq.sumBy (fun c -> if c = '1' then 1 else 0) s |> printfn "%d"
+    printfn "hello!"
     0
