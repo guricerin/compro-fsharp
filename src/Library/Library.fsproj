@@ -3,6 +3,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="math/Gcd.fs" />
+    <Compile Include="math/Prime.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
 </Project>
