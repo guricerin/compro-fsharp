@@ -5,6 +5,7 @@ Workspace for competitive programing with F#.
 ## Requirement
 
 * bash (*nix)
+* powershell (windows)
 * kmyk/online-judge-tools (https://github.com/kmyk/online-judge-tools)
 
 ## Usage
