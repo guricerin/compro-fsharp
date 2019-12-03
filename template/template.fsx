@@ -8,4 +8,4 @@ module Cin =
 [<EntryPoint>]
 let main _ =
     printfn "hello!"
-    0
+    0 // return an integer exit code
