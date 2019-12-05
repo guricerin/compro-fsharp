@@ -10,6 +10,7 @@ if (Test-Path ${SOLUTIONS_DIR}) {
     }
 }
 
+Remove-Item ${SOLUTIONS_DIR} -Force -Recurse
 New-Item ${SOLUTIONS_DIR} -ItemType Directory -Force
 
 $p_names = @("a", "b", "c", "d", "e", "f") 
