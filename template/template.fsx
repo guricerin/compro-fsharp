@@ -10,6 +10,12 @@ module Cin =
         |> Seq.toArray
         |> Array.map (fun x -> Convert.ToInt32(x.ToString()))
 
+module Util =
+    let strRev s =
+        s
+        |> Seq.rev
+        |> Seq.map string
+        |> String.concat ""
+
 [<EntryPoint>]
-let main _ =
-    0 // return an integer exit code
+let main _ = 0 // return an integer exit code
