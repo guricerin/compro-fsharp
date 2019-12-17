@@ -2,7 +2,7 @@ namespace Compro.Math
 
 module Prime =
 
-    let primeFactors n =
+    let primeFactors (n: int64): Map<int64, int64> =
         let limit =
             n
             |> float
@@ -26,6 +26,8 @@ module Prime =
             |> Map.ofSeq
         if n = 1L then res
         else res.Add(n, 1L)
+
+    let divisersCount (n: int64): int64 = primeFactors n |> Map.fold (fun acc k v -> acc * (v + 1L)) 1L
 
     /// upper以下の素数を列挙
     let sieveToUpper upper =
