@@ -26,3 +26,15 @@ module Prime =
             |> Map.ofSeq
         if n = 1L then res
         else res.Add(n, 1L)
+
+    /// upper以下の素数を列挙
+    let sieveToUpper upper =
+        seq {
+            yield 2
+            let knownComposites = new System.Collections.Generic.HashSet<int>()
+            for i in 3 .. 2 .. upper do
+                let found = knownComposites.Contains(i)
+                if not found then yield i
+                for j in i .. i .. upper do
+                    knownComposites.Add(j) |> ignore
+        }
