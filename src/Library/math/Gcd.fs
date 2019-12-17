@@ -9,3 +9,7 @@ module Gcd =
             if y = zero then x
             else loop y (x % y)
         loop x y
+
+    let inline lcm x y =
+        let g = gcd x y
+        x / g * y
