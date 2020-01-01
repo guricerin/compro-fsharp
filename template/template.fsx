@@ -18,6 +18,10 @@ module Util =
         |> Seq.map string
         |> String.concat ""
 
+    let inline roundup (a: ^t) (b: ^t): ^t =
+        let one = LanguagePrimitives.GenericOne
+        (a + b - one) / b
+
 [<EntryPoint>]
 let main _ =
     printfn "hello"
