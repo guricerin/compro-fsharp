@@ -19,4 +19,6 @@ module Util =
         |> String.concat ""
 
 [<EntryPoint>]
-let main _ = 0 // return an integer exit code
+let main _ =
+    printfn "hello"
+    0 // return an integer exit code
