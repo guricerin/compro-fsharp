@@ -27,7 +27,7 @@ module Prime =
         if n = 1L then res else res.Add(n, 1L)
 
     /// nの約数の個数
-    let divisersCount (n: int64): int64 = primeFactors n |> Map.fold (fun acc k v -> acc * (v + 1L)) 1L
+    let divisorsCount (n: int64): int64 = primeFactors n |> Map.fold (fun acc k v -> acc * (v + 1L)) 1L
 
     /// upper以下の素数を列挙
     let sieveToUpper upper =
