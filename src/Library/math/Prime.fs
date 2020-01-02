@@ -33,7 +33,7 @@ module Prime =
     let sieveToUpper upper =
         seq {
             yield 2
-            let knownComposites = new System.Collections.Generic.HashSet<int>()
+            let knownComposites = System.Collections.Generic.SortedSet<int>()
             for i in 3 .. 2 .. upper do
                 let found = knownComposites.Contains(i)
                 if not found then yield i
@@ -41,16 +41,16 @@ module Prime =
                     knownComposites.Add(j) |> ignore
         }
 
-    /// nの約数を列挙
-    let divisors (n: int64) =
+    /// nの約数を列挙(n自身を含む)
+    /// O(log n)
+    let divisors (n: int64): int64 array =
         let lim =
             n
             |> float
             |> sqrt
-            |> int
+            |> int64
         seq {
-            for i in 1 .. lim do
-                let i = int64 i
+            for i in 1L .. lim do
                 if n % i = 0L then
                     yield i
                     if i * i <> n then yield n / i

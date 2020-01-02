@@ -12,15 +12,15 @@ module Cin =
         |> Array.map (fun x -> Convert.ToInt32(x.ToString()))
 
 module Util =
-    let strRev s =
+    let strRev (s: string): string =
         s
         |> Seq.rev
         |> Seq.map string
         |> String.concat ""
 
-    let inline roundup (a: ^t) (b: ^t): ^t =
+    let inline roundup (x: ^a) (y: ^a): ^a =
         let one = LanguagePrimitives.GenericOne
-        (a + b - one) / b
+        (x + y - one) / y
 
 [<EntryPoint>]
 let main _ =
