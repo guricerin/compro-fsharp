@@ -1,43 +1,66 @@
 namespace Compro.Math
 
-type ModInt(x: int64) =
-    static let modulo = (int64 1e9) + 7L
+type ModInt = MVal of int64
 
-    member __.Value: int64 =
-        let y = x % modulo
-        match y with
-        | _ when y < 0L -> y + modulo
-        | _ when y >= modulo -> y - modulo
-        | _ -> y
+[<RequireQualifiedAccess>]
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>] // 型名とモジュール名の重複を許す
+module ModInt =
+    let modulo = (int64 1e9) + 7L
 
-    override __.ToString() = __.Value.ToString()
+    let inline init (x: ^a): ModInt =
+        let x = (int64 x) % modulo
+        match x with
+        | _ when x < 0L -> MVal(x + modulo)
+        | _ when x >= modulo -> MVal(x - modulo)
+        | _ -> MVal x
 
-    override __.Equals(rhs: obj) =
-        match rhs with
-        | :? ModInt as rhs -> __.Value = rhs.Value
-        | _ -> false
+    let value (MVal x) = x
 
-    override __.GetHashCode() = __.Value ^^^ modulo |> int
+    let value2 (x: ModInt) (y: ModInt) = (value x, value y)
 
-    static member (+) (lhs: ModInt, rhs: ModInt) = ModInt(lhs.Value + rhs.Value)
+    let toString (MVal v): string = sprintf "%d" v
 
-    static member (-) (lhs: ModInt, rhs: ModInt) = ModInt(lhs.Value - rhs.Value)
+    /// 拡張ユークリッドの互除法
+    /// a (mod m) における逆元 a^-1
+    let inline inverse (MVal a): ModInt =
+        let mutable (a, b, u, v) = (a, modulo, 1L, 0L)
+        while b > 0L do
+            let t = a / b
+            a <- a - (t * b)
+            let tmp = a
+            a <- b
+            b <- tmp
+            u <- u - (t * v)
+            let tmp = u
+            u <- v
+            v <- tmp
+        init u
 
-    static member (*) (lhs: ModInt, rhs: ModInt) = ModInt(lhs.Value * rhs.Value)
+type ModInt with
 
-    /// フェルマーの小定理
-    /// a / b = a * b^-1 (mod p)
-    /// b * b^p-2 = 1 (mod p) -> 両辺に b^-1 を掛けて、b^p-2 = b^-1 (mod p)
-    static member (/) (lhs: ModInt, rhs: ModInt) = lhs * (rhs ** (modulo - 2L))
+    static member inline (+) (lhs: ModInt, rhs: ModInt): ModInt =
+        let l, r = ModInt.value2 lhs rhs
+        ModInt.init (l + r)
 
-    /// **
-    /// 繰り返し二乗法
-    static member Pow(n: ModInt, m: int64) =
-        let mutable res = ModInt(1L)
-        let mutable n = n
-        let mutable m = m
-        while m > 0L do
-            if (m &&& 1L) = 1L then res <- res * n
-            n <- n * n
-            m <- m >>> 1
+    static member inline (-) (lhs: ModInt, rhs: ModInt): ModInt =
+        let l, r = ModInt.value2 lhs rhs
+        ModInt.init (l - r)
+
+    static member inline (*) (lhs: ModInt, rhs: ModInt): ModInt =
+        let l, r = ModInt.value2 lhs rhs
+        ModInt.init (l * r)
+
+    /// a / b = a * b^-1 (mod m)
+    static member inline (/) (lhs: ModInt, rhs: ModInt): ModInt =
+        let r = ModInt.inverse rhs
+        lhs * r
+
+    /// a^n (mod m) 繰り返しニ乗法
+    /// O(log n)
+    static member inline Pow(a: ModInt, n: int64): ModInt =
+        let mutable (res, a, n) = (ModInt.init 1, a, n)
+        while n > 0L do
+            if (n &&& 1L) = 1L then res <- res * a
+            a <- a * a
+            n <- n >>> 1
         res
