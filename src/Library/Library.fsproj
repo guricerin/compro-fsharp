@@ -7,6 +7,9 @@
     <Compile Include="math/Prime.fs" />
     <Compile Include="math/ModInt.fs" />
     <Compile Include="math/FastModInt.fs" />
+
+    <Compile Include="data-structure/UnionFind.fs" />
+
     <Compile Include="Library.fs" />
   </ItemGroup>
 </Project>

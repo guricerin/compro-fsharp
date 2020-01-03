@@ -11,6 +11,10 @@ module Cin =
         |> Seq.toArray
         |> Array.map (fun x -> Convert.ToInt32(x.ToString()))
 
+let writer = new IO.StreamWriter(new IO.BufferedStream(Console.OpenStandardOutput()))
+let write (s: string) = writer.Write s
+let writeln (s: string) = writer.WriteLine s
+
 module Util =
     let strRev (s: string): string =
         s
@@ -22,7 +26,12 @@ module Util =
         let one = LanguagePrimitives.GenericOne
         (x + y - one) / y
 
+let solve() =
+    printfn ""
+    ()
+
 [<EntryPoint>]
 let main _ =
-    printfn "hello"
+    solve()
+    writer.Close()
     0 // return an integer exit code
