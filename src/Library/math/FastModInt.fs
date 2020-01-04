@@ -1,7 +1,7 @@
 namespace Compro.Math
 
 [<RequireQualifiedAccess>]
-module ModIntInner =
+module MInt =
 
     let inline init (x: ^a) (modulo: int64): int64 =
         let x = (int64 x) % modulo
@@ -63,36 +63,62 @@ module ModIntInner =
         res
 
 type ModInt(modulo: int64) =
-    member __.modulo = modulo
+    member __.Modulo = modulo
 
     member __.Add(l: int64, r: int64) =
-        let m = __.modulo
-        ModIntInner.add l r m
-
-    member __.Add(l: int, r: int) = __.Add(int64 l, int64 r)
-    member __.Add(l: int64, r: int) = __.Add(l, int64 r)
-    member __.Add(l: int, r: int64) = __.Add(int64 l, r)
+        let m = __.Modulo
+        MInt.add l r m
 
     member __.Sub(l: int64, r: int64) =
-        let m = __.modulo
-        ModIntInner.sub l r m
-
-    member __.Sub(l: int, r: int) = __.Sub(int64 l, int64 r)
-    member __.Sub(l: int64, r: int) = __.Sub(l, int64 r)
-    member __.Sub(l: int, r: int64) = __.Sub(int64 l, r)
+        let m = __.Modulo
+        MInt.sub l r m
 
     member __.Mul(l: int64, r: int64) =
-        let m = __.modulo
-        ModIntInner.mul l r m
-
-    member __.Mul(l: int, r: int) = __.Mul(int64 l, int64 r)
-    member __.Mul(l: int64, r: int) = __.Mul(l, int64 r)
-    member __.Mul(l: int, r: int64) = __.Mul(int64 l, r)
+        let m = __.Modulo
+        MInt.mul l r m
 
     member __.Div(l: int64, r: int64) =
-        let m = __.modulo
-        ModIntInner.div l r m
+        let m = __.Modulo
+        MInt.div l r m
 
-    member __.Div(l: int, r: int) = __.Div(int64 l, int64 r)
-    member __.Div(l: int64, r: int) = __.Div(l, int64 r)
-    member __.Div(l: int, r: int64) = __.Div(int64 l, r)
+type BiCoef =
+    { modulo: int64
+      fact: int64 array
+      inv: int64 array
+      finv: int64 array }
+
+[<RequireQualifiedAccess>]
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module BiCoef =
+
+    let inline init (n: ^a) (modulo: ^b): BiCoef =
+        let n = int n
+        let fact = Array.init n (fun _ -> 1L)
+        let inv = Array.init n (fun _ -> 1L)
+        let finv = Array.init n (fun _ -> 1L)
+        let m, m32 = int64 modulo, int32 modulo
+        for i in 2 .. n - 1 do
+            let a = MInt.mul fact.[i - 1] i m
+            fact.[i] <- a
+            let a = MInt.mul (-inv.[m32 % i]) (m32 / i) m
+            inv.[i] <- a
+            let a = MInt.mul finv.[i - 1] inv.[i] m
+            finv.[i] <- a
+
+        { BiCoef.modulo = m
+          fact = fact
+          inv = inv
+          finv = finv }
+
+    let inline com (n: ^a) (k: ^b) (bicoef: BiCoef) =
+        let n, k = int n, int k
+        let m = bicoef.modulo
+        match n, k with
+        | _, _ when n < k -> 0L
+        | _, _ when n < 0 -> 0L
+        | _, _ when k < 0 -> 0L
+        | _ ->
+            let numer, b, c = bicoef.fact.[n], bicoef.finv.[k], bicoef.finv.[n - k]
+            let denom = MInt.mul b c m
+            let res = MInt.mul numer denom m
+            res
