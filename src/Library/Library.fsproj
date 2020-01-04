@@ -10,6 +10,7 @@
 
     <Compile Include="data-structure/UnionFind.fs" />
 
+    <Compile Include="Util.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
 </Project>

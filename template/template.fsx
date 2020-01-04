@@ -5,33 +5,24 @@ open System.Collections.Generic
 module Cin =
     let read f = stdin.ReadLine() |> f
     let reada f = stdin.ReadLine().Split() |> Array.map f
+    let readChars() = read string |> Seq.toArray
+    let readInts() = readChars() |> Array.map (fun x -> Convert.ToInt32(x.ToString()))
 
-    let readInts() =
-        read string
-        |> Seq.toArray
-        |> Array.map (fun x -> Convert.ToInt32(x.ToString()))
-
-let writer = new IO.StreamWriter(new IO.BufferedStream(Console.OpenStandardOutput()))
-let write (s: string) = writer.Write s
-let writeln (s: string) = writer.WriteLine s
-
-module Util =
-    let strRev (s: string): string =
-        s
-        |> Seq.rev
-        |> Seq.map string
-        |> String.concat ""
-
-    let inline roundup (x: ^a) (y: ^a): ^a =
-        let one = LanguagePrimitives.GenericOne
-        (x + y - one) / y
+[<AutoOpen>]
+module Cout =
+    let writer = new IO.StreamWriter(new IO.BufferedStream(Console.OpenStandardOutput()))
+    let print (s: string) = writer.Write s
+    let println (s: string) = writer.WriteLine s
+    let inline puts (s: ^a) = string s |> println
 
 let solve() =
-    printfn ""
+    puts "微分積分いい気分"
     ()
 
 [<EntryPoint>]
 let main _ =
-    solve()
+    try
+        solve()
+    with e -> failwithf "%s" (e.ToString())
     writer.Close()
     0 // return an integer exit code

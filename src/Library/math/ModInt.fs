@@ -1,4 +1,4 @@
-namespace Compro.Math
+namespace Compro.Math.ModInt1
 
 type ModInt = MVal of int64
 
@@ -96,7 +96,7 @@ module BiCoef =
         for i in 2 .. n - 1 do
             let a = (ModInt.init fact.[i - 1]) * (ModInt.init i)
             fact.[i] <- ModInt.value a
-            let a = (ModInt.init -inv.[m % i]) * (ModInt.init (m % i))
+            let a = (ModInt.init -inv.[m % i]) * (ModInt.init (m / i))
             inv.[i] <- ModInt.value a
             let a = (ModInt.init finv.[i - 1]) * (ModInt.init inv.[i])
             finv.[i] <- ModInt.value a

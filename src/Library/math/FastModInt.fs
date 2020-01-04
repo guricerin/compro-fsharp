@@ -1,4 +1,4 @@
-namespace Compro.Math
+namespace Compro.Math.ModInt2
 
 [<RequireQualifiedAccess>]
 module MInt =
