@@ -11,6 +11,7 @@ module ModInt =
         let x = (int64 x) % modulo
         match x with
         | _ when x < 0L -> MVal(x + modulo)
+        | _ when x >= modulo -> MVal(x - modulo)
         | _ -> MVal x
 
     let value (MVal x) = x
@@ -54,9 +55,8 @@ type ModInt with
         | _ -> ModInt.init x
 
     static member inline (*) (lhs: ModInt, rhs: ModInt): ModInt =
-        let m = ModInt.modulo
         let l, r = ModInt.value2 lhs rhs
-        let x = l * r % m
+        let x = l * r
         ModInt.init x
 
     /// a / b = a * b^-1 (mod m)
@@ -74,45 +74,45 @@ type ModInt with
             n <- n >>> 1
         res
 
+    /// 符号反転
     static member inline (~-) (x: ModInt): ModInt =
         let v = ModInt.value x
         ModInt.init (-v)
 
 type BiCoef =
     { modulo: int64
-      fact: int64 array
-      inv: int64 array
-      finv: int64 array }
+      fact: ModInt array
+      inv: ModInt array
+      finv: ModInt array }
 
 [<RequireQualifiedAccess>]
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module BiCoef =
 
-    let init (n: int) (modulo: int64): BiCoef =
-        let fact = Array.init n (fun _ -> 1L)
-        let inv = Array.init n (fun _ -> 1L)
-        let finv = Array.init n (fun _ -> 1L)
+    let inline init (n: ^a) (modulo: ^b): BiCoef =
+        let n = int n
+        let one = ModInt.init 1
+        let fact = Array.init n (fun _ -> one)
+        let inv = Array.init n (fun _ -> one)
+        let finv = Array.init n (fun _ -> one)
         let m = modulo |> int
         for i in 2 .. n - 1 do
-            let a = (ModInt.init fact.[i - 1]) * (ModInt.init i)
-            fact.[i] <- ModInt.value a
-            let a = (ModInt.init -inv.[m % i]) * (ModInt.init (m / i))
-            inv.[i] <- ModInt.value a
-            let a = (ModInt.init finv.[i - 1]) * (ModInt.init inv.[i])
-            finv.[i] <- ModInt.value a
+            fact.[i] <- fact.[i - 1] * (ModInt.init i)
+            inv.[i] <- -inv.[m % i] * (ModInt.init (m / i))
+            finv.[i] <- finv.[i - 1] * inv.[i]
 
-        { BiCoef.modulo = modulo
+        { BiCoef.modulo = modulo |> int64
           fact = fact
           inv = inv
           finv = finv }
 
     let inline com (n: ^a) (k: ^b) (bicoef: BiCoef) =
         let n, k = int n, int k
+        let zero = ModInt.init 0
         match n, k with
-        | _, _ when n < k -> 0L
-        | _, _ when n < 0 -> 0L
-        | _, _ when k < 0 -> 0L
+        | _ when n < k -> zero
+        | _ when n < 0 -> zero
+        | _ when k < 0 -> zero
         | _ ->
-            let res =
-                (ModInt.init bicoef.fact.[n]) * (ModInt.init bicoef.finv.[k]) * (ModInt.init bicoef.finv.[n - k])
-            res |> ModInt.value
+            let res = bicoef.fact.[n] * bicoef.finv.[k] * bicoef.finv.[n - k]
+            res
