@@ -14,6 +14,9 @@ module ModInt =
         | _ when x >= modulo -> MVal(x - modulo)
         | _ -> MVal x
 
+    let zero = init 0
+    let one = init 1
+
     let value (MVal x) = x
 
     let value2 (x: ModInt) (y: ModInt) = (value x, value y)
