@@ -2,6 +2,18 @@ namespace Compro.Math
 
 module Prime =
 
+    let inline isPrime (n: int) =
+        let limit =
+            n
+            |> float
+            |> sqrt
+            |> int
+        seq {
+            for p in 2 .. limit do
+                if n % p = 0 then yield ()
+        }
+        |> Seq.isEmpty
+
     /// nを素因数分解した結果を返す
     let primeFactors (n: int64): Map<int64, int64> =
         let limit =
