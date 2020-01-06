@@ -23,6 +23,6 @@ let solve() =
 let main _ =
     try
         solve()
-    with e -> failwithf "%s" (e.ToString())
+    with e -> printfn "%s" (e.ToString())
     writer.Close()
     0 // return an integer exit code
