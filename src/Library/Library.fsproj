@@ -9,6 +9,7 @@
     <Compile Include="math/FastModInt.fs" />
 
     <Compile Include="data-structure/UnionFind.fs" />
+    <Compile Include="data-structure/MutablePriorityQueue.fs" />
 
     <Compile Include="Util.fs" />
     <Compile Include="Library.fs" />
