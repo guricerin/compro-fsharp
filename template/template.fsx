@@ -15,14 +15,9 @@ module Cout =
     let println (s: string) = writer.WriteLine s
     let inline puts (s: ^a) = string s |> println
 
-let solve() =
+let main() =
     puts "微分積分いい気分"
     ()
 
-[<EntryPoint>]
-let main _ =
-    try
-        solve()
-    with e -> printfn "%s" (e.ToString())
-    writer.Close()
-    0 // return an integer exit code
+main()
+writer.Close()

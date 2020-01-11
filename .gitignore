@@ -358,4 +358,4 @@ MigrationBackup/
 !.gitkeep
 .ionide/
 .vscode/
-src/Solution/Solutions/
+src/Solutions/

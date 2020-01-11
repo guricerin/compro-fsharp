@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{14BBFB97-4E9
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Library", "src\Library\Library.fsproj", "{F0927D7D-7FDA-4236-9F1A-4ED64ABD4FD5}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Solution", "src\Solution\Solution.fsproj", "{FB174F76-E55D-4701-AA0A-22697C2E19CE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,21 +32,8 @@ Global
 		{F0927D7D-7FDA-4236-9F1A-4ED64ABD4FD5}.Release|x64.Build.0 = Release|Any CPU
 		{F0927D7D-7FDA-4236-9F1A-4ED64ABD4FD5}.Release|x86.ActiveCfg = Release|Any CPU
 		{F0927D7D-7FDA-4236-9F1A-4ED64ABD4FD5}.Release|x86.Build.0 = Release|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Debug|x64.Build.0 = Debug|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Debug|x86.Build.0 = Debug|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Release|x64.ActiveCfg = Release|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Release|x64.Build.0 = Release|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Release|x86.ActiveCfg = Release|Any CPU
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F0927D7D-7FDA-4236-9F1A-4ED64ABD4FD5} = {14BBFB97-4E96-498A-BB2C-3E6F0D651377}
-		{FB174F76-E55D-4701-AA0A-22697C2E19CE} = {14BBFB97-4E96-498A-BB2C-3E6F0D651377}
 	EndGlobalSection
 EndGlobal
