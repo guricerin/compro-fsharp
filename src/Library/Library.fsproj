@@ -8,6 +8,8 @@
     <Compile Include="math/ModInt.fs" />
     <Compile Include="math/FastModInt.fs" />
 
+    <Compile Include="algorithm/Permutation.fs" />
+
     <Compile Include="data-structure/UnionFind.fs" />
     <Compile Include="data-structure/MutablePriorityQueue.fs" />
 
