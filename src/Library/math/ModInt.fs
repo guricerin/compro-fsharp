@@ -94,7 +94,7 @@ module BiCoef =
 
     let inline init (n: ^a) (modulo: ^b): BiCoef =
         let n = int n
-        let one = ModInt.init 1
+        let one = ModInt.one
         let fact = Array.init n (fun _ -> one)
         let inv = Array.init n (fun _ -> one)
         let finv = Array.init n (fun _ -> one)
@@ -111,7 +111,7 @@ module BiCoef =
 
     let inline com (n: ^a) (k: ^b) (bicoef: BiCoef) =
         let n, k = int n, int k
-        let zero = ModInt.init 0
+        let zero = ModInt.zero
         match n, k with
         | _ when n < k -> zero
         | _ when n < 0 -> zero

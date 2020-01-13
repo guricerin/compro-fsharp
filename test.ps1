@@ -11,11 +11,11 @@ $TEST_DIR = "${SOLUTIONS_DIR}\${P_NAME}-test"
 if (!(Test-Path ${TEST_DIR})) {
     $url = (Read-Host "Info: input problem url. > ")
     New-Item ${TEST_DIR} -ItemType Directory -Force
-    cd ${TEST_DIR}
+    Set-Location ${TEST_DIR}
     oj dl ${url}
 }
 
-cd ${TEST_DIR}
-cp ${SOLUTIONS_DIR}\${P_NAME}.fsx .
-oj test -c "dotnet fsi ${P_NAME}.fsx"
-cd ${BASE_PATH}
+Set-Location ${TEST_DIR}
+Copy-Item ${SOLUTIONS_DIR}\${P_NAME}.fsx .
+oj test -c "dotnet fsi ${P_NAME}.fsx --exec"
+Set-Location ${BASE_PATH}
