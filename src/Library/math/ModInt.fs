@@ -42,20 +42,14 @@ module ModInt =
 type ModInt with
 
     static member inline (+) (lhs: ModInt, rhs: ModInt): ModInt =
-        let m = ModInt.modulo
         let l, r = ModInt.value2 lhs rhs
         let x = l + r
-        match x with
-        | _ when x >= m -> ModInt.init (x - m)
-        | _ -> ModInt.init x
+        ModInt.init x
 
     static member inline (-) (lhs: ModInt, rhs: ModInt): ModInt =
-        let m = ModInt.modulo
         let l, r = ModInt.value2 lhs rhs
         let x = l - r
-        match x with
-        | _ when x < 0L -> ModInt.init (x + m)
-        | _ -> ModInt.init x
+        ModInt.init x
 
     static member inline (*) (lhs: ModInt, rhs: ModInt): ModInt =
         let l, r = ModInt.value2 lhs rhs
