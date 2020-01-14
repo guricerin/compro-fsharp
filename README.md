@@ -4,22 +4,19 @@ Workspace for competitive programing with F#.
 
 ## Requirement
 
-* bash (*nix)
-* powershell (windows)
+* pwsh
 * kmyk/online-judge-tools (https://github.com/kmyk/online-judge-tools)
 
 ## Usage
 
 * setup or change problems
 
-```bash
-chmod a+x ready.sh
-./ready.sh
+```pwsh
+./ready.ps1
 ```
 
 * build and test
 
-```bash
-chmod a+x test.sh
-./test.sh (a ~ f)
+```pwsh
+./test.ps1 (a ~ f)
 ```
