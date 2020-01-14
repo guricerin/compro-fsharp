@@ -1,19 +1,22 @@
-$BASE_PATH = Split-Path $MyInvocation.MyCommand.Path
-$SOLUTIONS_DIR = "${BASE_PATH}\src\Solutions"
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "stop"
 
-if (Test-Path ${SOLUTIONS_DIR}) {
-    $res = (Read-Host "Info: ${SOLUTIONS_DIR} is already exists. Remake that? [y/n] > ")
+$BASE_PATH = Split-Path $MyInvocation.MyCommand.Path
+$PROBLEMS_DIR = "${BASE_PATH}\Problems"
+
+if (Test-Path ${PROBLEMS_DIR}) {
+    $res = (Read-Host "Info: ${PROBLEMS_DIR} is already exists. Remake that? [y/n] > ")
     if (${res} -ne "y") {
         Write-Output "Info: stop process."
-        exit 1
+        exit 0
     }
+    Remove-Item ${PROBLEMS_DIR} -Force -Recurse
 }
 
-Remove-Item ${SOLUTIONS_DIR} -Force -Recurse
-New-Item ${SOLUTIONS_DIR} -ItemType Directory -Force
+New-Item ${PROBLEMS_DIR} -ItemType Directory -Force
 
 $p_names = @("a", "b", "c", "d", "e", "f") 
 
-${p_names} | % { Copy-Item ${BASE_PATH}\template\template.fsx ${SOLUTIONS_DIR}\${_}.fsx }
+${p_names} | % { Copy-Item ${BASE_PATH}\template\template.fsx ${PROBLEMS_DIR}\${_}.fsx }
 
-Write-Output "Making ${SOLUTIONS_DIR} dir have done. Go For It!"
+Write-Output "Making ${PROBLEMS_DIR} dir have done. Go For It!"

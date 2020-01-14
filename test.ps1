@@ -1,12 +1,15 @@
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "stop"
+
 if (${args}.Length -ne 1) {
-    Write-Output "Error: expected argument is 1, but actual is $(${args}.Length)."
+    Write-Output "Usage: .\test.ps1 (a - f)"
     exit 1
 }
 
 $BASE_PATH = Split-Path $MyInvocation.MyCommand.Path
-$SOLUTIONS_DIR = "${BASE_PATH}\src\Solutions"
+$PROBLEMS_DIR = "${BASE_PATH}\Problems"
 $P_NAME = ${args}[0]
-$TEST_DIR = "${SOLUTIONS_DIR}\${P_NAME}-test"
+$TEST_DIR = "${PROBLEMS_DIR}\${P_NAME}-test"
 
 if (!(Test-Path ${TEST_DIR})) {
     $url = (Read-Host "Info: input problem url. > ")
@@ -16,6 +19,6 @@ if (!(Test-Path ${TEST_DIR})) {
 }
 
 Set-Location ${TEST_DIR}
-Copy-Item ${SOLUTIONS_DIR}\${P_NAME}.fsx .
+Copy-Item ${PROBLEMS_DIR}\${P_NAME}.fsx .
 oj test -c "dotnet fsi ${P_NAME}.fsx --exec"
 Set-Location ${BASE_PATH}
