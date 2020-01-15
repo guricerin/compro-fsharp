@@ -53,6 +53,23 @@ module Prime =
                     knownComposites.Add(j) |> ignore
         }
 
+    /// 添え字が素数かどうかを表す配列を返す
+    let eraSieve upper =
+        let upper = int upper + 1
+        let res = Array.init upper (fun _ -> true)
+        res.[0] <- false
+        res.[1] <- false
+        let rec loop a b =
+            let c = a * b
+            if c >= upper then
+                ()
+            else
+                res.[c] <- false
+                loop a (b + 1)
+        for i in 2 .. upper - 1 do
+            if res.[i] then loop i 2
+        res
+
     /// nの約数を列挙(n自身を含む)
     /// O(log n)
     let divisors (n: int64): int64 array =
