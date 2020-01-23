@@ -63,12 +63,12 @@ type ModInt with
 
     /// a^n (mod m) 繰り返しニ乗法
     /// O(log n)
-    static member inline Pow(a: ModInt, n: int64): ModInt =
-        let mutable (res, a, n) = (ModInt.init 1, a, n)
-        while n > 0L do
-            if (n &&& 1L) = 1L then res <- res * a
+    static member inline Pow(a: ModInt, e: int64): ModInt =
+        let mutable (res, a, e) = (ModInt.one, a, e)
+        while e > 0L do
+            if (e &&& 1L) <> 0L then res <- res * a
             a <- a * a
-            n <- n >>> 1
+            e <- e >>> 1
         res
 
     /// 符号反転
