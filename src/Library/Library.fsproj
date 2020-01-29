@@ -11,7 +11,7 @@
     <Compile Include="algorithm/Permutation.fs" />
 
     <Compile Include="data-structure/UnionFind.fs" />
-    <Compile Include="data-structure/LazySegTree-recode.fs" />
+    <Compile Include="data-structure/SegmentTree.fs" />
     <Compile Include="data-structure/LazySegTree-class.fs" />
     <Compile Include="data-structure/MutablePriorityQueue.fs" />
 
