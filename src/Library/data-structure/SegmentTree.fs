@@ -46,6 +46,7 @@ module SegTree =
     let inline internal rightChild i = (i <<< 1) + 2
     let inline internal leafIdx tree k = k + tree.size - 1
 
+    /// O(n)
     let init (n: int) (unity: 'Monoid) (f: Merge<'Monoid>) (g: Change<'Monoid>) =
         let size, height = sizeAndHeight n
         let nodes = Array.init (size * 2 - 1) (fun _ -> unity)
@@ -56,6 +57,7 @@ module SegTree =
           merge = f
           change = g }
 
+    /// O(n)
     let build (sq: 'Monoid seq) unity f g =
         let sq = Array.ofSeq sq
         let len = Array.length sq
@@ -72,16 +74,21 @@ module SegTree =
         tree
 
     /// 一点更新
+    /// O(log n)
     let update k x tree: unit =
         let k = leafIdx tree k
         let nodes = tree.nodes
         nodes.[k] <- tree.change nodes.[k] x
         // 子から親に伝搬
-        let mutable p = k
-        while p > 0 do
-            p <- parent p
-            let lc, rc = leftChild p, rightChild p
-            nodes.[p] <- tree.merge nodes.[lc] nodes.[rc]
+        let rec loop k =
+            if k > 0 then
+                let p = parent k
+                let lc, rc = leftChild p, rightChild p
+                nodes.[p] <- tree.merge nodes.[lc] nodes.[rc]
+                loop p
+            else
+                ()
+        loop k
 
     let rec internal queryCore (a: int) (b: int) (k: int) (l: int) (r: int) tree: 'Monoid =
         // 区間外
@@ -97,10 +104,10 @@ module SegTree =
             let rv = queryCore a b rc mid r tree
             tree.merge lv rv
 
+    /// O(log n)
     let query a b tree: 'Monoid = queryCore a b 0 0 tree.size tree
 
+    /// O(1)
     let get k tree =
         let k = leafIdx tree k
         tree.nodes.[k]
-
-/// END CUT HERE
