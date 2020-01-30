@@ -24,9 +24,13 @@ type SegTree<'Monoid> =
       /// 0-indexed
       nodes: 'Monoid array
       /// 二項演算
-      merge: Merge<'Monoid> }
+      merge: Merge<'Monoid>
+      /// 点更新
+      change: Change<'Monoid> }
 
 and Merge<'a> = 'a -> 'a -> 'a
+
+and Change<'a> = 'a -> 'a -> 'a
 
 [<RequireQualifiedAccess>]
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
@@ -42,19 +46,20 @@ module SegTree =
     let inline internal rightChild i = (i <<< 1) + 2
     let inline internal leafIdx tree k = k + tree.size - 1
 
-    let init (n: int) (f: Merge<'Monoid>) (unity: 'Monoid) =
+    let init (n: int) (unity: 'Monoid) (f: Merge<'Monoid>) (g: Change<'Monoid>) =
         let size, height = sizeAndHeight n
         let nodes = Array.init (size * 2 - 1) (fun _ -> unity)
         { SegTree.size = size
           height = height
           unity = unity
           nodes = nodes
-          merge = f }
+          merge = f
+          change = g }
 
-    let build (sq: 'Monoid seq) f unity =
+    let build (sq: 'Monoid seq) unity f g =
         let sq = Array.ofSeq sq
         let len = Array.length sq
-        let tree = init len f unity
+        let tree = init len unity f g
         let nodes = tree.nodes
         // 葉ノードに値を格納
         for i in 0 .. len - 1 do
@@ -70,7 +75,7 @@ module SegTree =
     let update k x tree: unit =
         let k = leafIdx tree k
         let nodes = tree.nodes
-        nodes.[k] <- x
+        nodes.[k] <- tree.change nodes.[k] x
         // 子から親に伝搬
         let mutable p = k
         while p > 0 do
