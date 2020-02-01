@@ -1,21 +1,29 @@
 namespace Compro.DataStructure
 
+/// 素集合データ構造: UnionFindTree (DisjointSet)
+/// グループを1つの木で表現。全体としては森
+
+/// BEGIN CUT HERE
 type UnionFind =
-    { par: int array
-      rank: int array }
+    {
+      /// 添字iが属するグループID
+      par: int array
+      /// 各集合の要素数
+      size: int array }
 
 [<RequireQualifiedAccess>]
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module UnionFind =
 
-    let inline init (n: ^a) =
-        let n = int n
+    /// O(n)
+    let init (n: int): UnionFind =
         let par = Array.init n id
-        let rank = Array.zeroCreate n
+        let size = Array.init n (fun _ -> 1)
         { UnionFind.par = par
-          rank = rank }
+          size = size }
 
-    let rec root x uf =
+    /// x: 0-indexed
+    let rec root (x: int) (uf: UnionFind): int =
         let par = uf.par
         match x = par.[x] with
         | true -> x
@@ -24,17 +32,35 @@ module UnionFind =
             par.[x] <- root px uf
             par.[x]
 
-    let find x y uf = (root x uf) = (root y uf)
+    /// 連結判定
+    let find (x: int) (y: int) (uf: UnionFind) = (root x uf) = (root y uf)
 
-    let unite x y uf =
-        let par, rank = uf.par, uf.rank
+    let unite (x: int) (y: int) (uf: UnionFind): bool =
+        let par, size = uf.par, uf.size
         let rx, ry = root x uf, root y uf
         match rx = ry with
         | true -> false
-        | false ->
+        | _ ->
+            // マージテク(大きい方に小さい方を併合)
             let large, small =
-                if rank.[rx] < rank.[ry] then ry, rx else rx, ry
+                if size.[rx] < size.[ry] then ry, rx else rx, ry
             par.[small] <- large
-            rank.[large] <- rank.[large] + rank.[small]
-            rank.[small] <- 0
+            size.[large] <- size.[large] + size.[small]
+            size.[small] <- 0
             true
+
+    /// 素集合のサイズ
+    /// x: 0-indexed
+    let size (x: int) (uf: UnionFind): int =
+        let rx = root x uf
+        uf.size.[rx]
+
+    /// 連結成分の個数
+    /// O(n)
+    let treeNum (uf: UnionFind): int =
+        let par = uf.par
+        let mutable cnt = 0
+        par
+        |> Array.iteri (fun i x ->
+            if i = x then cnt <- cnt + 1)
+        cnt
