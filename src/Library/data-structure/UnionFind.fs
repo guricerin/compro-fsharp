@@ -6,7 +6,7 @@ namespace Compro.DataStructure
 /// BEGIN CUT HERE
 type UnionFind =
     {
-      /// 添字iが属するグループID
+      /// 添字iが属するグループID (0-indexed)
       par: int array
       /// 各集合の要素数
       size: int array }
@@ -22,7 +22,7 @@ module UnionFind =
         { UnionFind.par = par
           size = size }
 
-    /// x: 0-indexed
+    /// xの先祖(xが属するグループID)
     let rec root (x: int) (uf: UnionFind): int =
         let par = uf.par
         match x = par.[x] with
@@ -33,13 +33,16 @@ module UnionFind =
             par.[x]
 
     /// 連結判定
+    /// ならし O(α(n))
     let find (x: int) (y: int) (uf: UnionFind) = (root x uf) = (root y uf)
 
+    /// xとyを同じグループに併合
+    /// ならし O(α(n))
     let unite (x: int) (y: int) (uf: UnionFind): bool =
         let par, size = uf.par, uf.size
         let rx, ry = root x uf, root y uf
         match rx = ry with
-        | true -> false
+        | true -> false // 既に同じグループ
         | _ ->
             // マージテク(大きい方に小さい方を併合)
             let large, small =
@@ -49,8 +52,8 @@ module UnionFind =
             size.[small] <- 0
             true
 
-    /// 素集合のサイズ
-    /// x: 0-indexed
+    /// xが属する素集合の要素数
+    /// O(1)
     let size (x: int) (uf: UnionFind): int =
         let rx = root x uf
         uf.size.[rx]
