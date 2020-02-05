@@ -15,6 +15,9 @@
     <Compile Include="data-structure/LazySegTree-class.fs" />
     <Compile Include="data-structure/MutablePriorityQueue.fs" />
 
+    <Compile Include="graph/GraphUnit.fs" />
+    <Compile Include="graph/Dijkstra.fs" />
+
     <Compile Include="Util.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>

@@ -25,7 +25,10 @@ type PriorityQueue<'T>(compare: 'T -> 'T -> int) =
         _heap.[x] <- _heap.[y]
         _heap.[y] <- tmp
 
-    // O(log n)
+    /// ここでの比較は昇順ソートを基準に考えている
+    member self.Compare(x: int, y: int) = (_compare _heap.[x] _heap.[y]) < 0
+
+    /// O(log n)
     member self.Enque(x: 'T) =
         let size = _heap.Count
         _heap.Add(x)
@@ -34,8 +37,7 @@ type PriorityQueue<'T>(compare: 'T -> 'T -> int) =
             match k > 0 with
             | true ->
                 let p = parent k
-                // ここでの比較は昇順ソートを基準に考えている
-                match _compare _heap.[k] _heap.[p] < 0 with
+                match self.Compare(k, p) with
                 | true ->
                     swap k p
                     loop p
@@ -43,7 +45,7 @@ type PriorityQueue<'T>(compare: 'T -> 'T -> int) =
             | _ -> ()
         loop size
 
-    // O(log n)
+    /// O(log n)
     member self.Deque() =
         let res = _heap.[0]
         // 末尾ノードを根に持ってくる
@@ -58,12 +60,10 @@ type PriorityQueue<'T>(compare: 'T -> 'T -> int) =
                 let right = rightChild k
 
                 let c =
-                    // ここでの比較は昇順ソートを基準に考えている
-                    if right < size && _compare _heap.[right] _heap.[left] < 0
+                    if right < size && self.Compare(right, left)
                     then right
                     else left
-                // ここでの比較は以下省略
-                match _compare _heap.[c] _heap.[k] < 0 with
+                match self.Compare(c, k) with
                 | true ->
                     swap c k
                     loop c
