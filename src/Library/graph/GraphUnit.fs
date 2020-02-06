@@ -1,9 +1,8 @@
-namespace Compro.Graph
-
-/// グラフにおける重み付きの辺
-/// toは予約語のため、towardにしている
+namespace Compro.Graph.GraphUnit
 
 /// BEGIN CUT HERE
+
+/// グラフにおける重み付きの辺
 type Edge<'T when 'T: comparison> =
     { from: int
       toward: int

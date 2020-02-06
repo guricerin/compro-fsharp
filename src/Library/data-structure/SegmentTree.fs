@@ -1,4 +1,4 @@
-namespace Compro.DataStructure
+namespace Compro.DataStructure.SegmentTree
 
 /// セグメント木:
 /// 各ノードが区間に対応づいた完全二分木。モノイドの区間に対する様々な演算が O(log n) で実現可能

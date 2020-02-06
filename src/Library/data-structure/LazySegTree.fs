@@ -1,4 +1,4 @@
-namespace Compro.DataStructure.LazySegTreeRecode
+namespace Compro.DataStructure.LazySegTree
 
 /// 遅延セグメント木:
 /// 連続する区間に対して更新と取得が可能となったセグメント木
@@ -21,11 +21,11 @@ type LazySegTree<'Monoid, 'OpMonoid> =
       g: G<'Monoid, 'OpMonoid>
       h: H<'OpMonoid> }
 
-and F<'Monoid> = 'Monoid -> 'Monoid -> 'Monoid
+and F<'a> = 'a -> 'a -> 'a
 
-and G<'Monoid, 'OpMonoid> = 'Monoid -> 'OpMonoid -> 'Monoid
+and G<'a, 'b> = 'a -> 'b -> 'a
 
-and H<'OpMonoid> = 'OpMonoid -> 'OpMonoid -> 'OpMonoid
+and H<'a> = 'a -> 'a -> 'a
 
 [<RequireQualifiedAccess>]
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]

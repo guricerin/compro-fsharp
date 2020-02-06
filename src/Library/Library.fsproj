@@ -6,13 +6,12 @@
     <Compile Include="math/Gcd.fs" />
     <Compile Include="math/Prime.fs" />
     <Compile Include="math/ModInt.fs" />
-    <Compile Include="math/FastModInt.fs" />
 
     <Compile Include="algorithm/Permutation.fs" />
 
     <Compile Include="data-structure/UnionFind.fs" />
     <Compile Include="data-structure/SegmentTree.fs" />
-    <Compile Include="data-structure/LazySegTree-class.fs" />
+    <Compile Include="data-structure/LazySegTree.fs" />
     <Compile Include="data-structure/MutablePriorityQueue.fs" />
 
     <Compile Include="graph/GraphUnit.fs" />

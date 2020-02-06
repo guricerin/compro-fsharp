@@ -1,4 +1,4 @@
-namespace Compro.DataStructure.MutablePriorityQueue
+namespace Compro.DataStructure.PriorityQueue
 
 open System
 

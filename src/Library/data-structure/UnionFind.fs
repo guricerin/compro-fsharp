@@ -1,4 +1,4 @@
-namespace Compro.DataStructure
+namespace Compro.DataStructure.UnionFind
 
 /// 素集合データ構造: UnionFindTree (DisjointSet)
 /// グループを1つの木で表現。全体としては森

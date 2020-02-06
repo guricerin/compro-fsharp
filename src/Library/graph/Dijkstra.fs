@@ -1,7 +1,8 @@
-namespace Compro.Graph
+namespace Compro.Graph.Dijkstra
 
 open System
-open Compro.DataStructure.MutablePriorityQueue
+open Compro.Graph.GraphUnit
+open Compro.DataStructure.PriorityQueue
 
 /// ダイクストラ法(単一始点最短路)
 /// 負辺のない単一始点全点間最短路を求める

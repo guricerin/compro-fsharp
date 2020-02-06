@@ -1,4 +1,4 @@
-namespace Compro.Math.ModInt1
+namespace Compro.Math.ModInt
 
 /// BEGIN CUT HERE
 type ModInt = MVal of int64
