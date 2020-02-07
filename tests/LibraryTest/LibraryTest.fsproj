@@ -6,6 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="math/Gcd.fs" />
+    <Compile Include="math/ModInt.fs" />
+
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
