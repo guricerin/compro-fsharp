@@ -8,6 +8,7 @@
     <Compile Include="math/Gcd.fs" />
     <Compile Include="math/ModInt.fs" />
 
+    <Compile Include="data-structure/UnionFind.fs" />
     <Compile Include="data-structure/SegmentTree.fs" />
     <Compile Include="data-structure/PriorityQueue.fs" />
 
