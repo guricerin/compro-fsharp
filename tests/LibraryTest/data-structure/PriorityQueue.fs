@@ -13,11 +13,17 @@ module Ascending =
     [<Tests>]
     let tests =
         test "Ascending PriorityQueue" {
+            Expect.equal true (que.Any()) ""
             Expect.equal 2 (que.Deque()) ""
+            Expect.equal true (que.Any()) ""
             Expect.equal 4 (que.Deque()) ""
+            Expect.equal true (que.Any()) ""
             Expect.equal 6 (que.Deque()) ""
+            Expect.equal true (que.Any()) ""
             Expect.equal 8 (que.Deque()) ""
+            Expect.equal true (que.Any()) ""
             Expect.equal 10 (que.Deque()) ""
+            Expect.equal false (que.Any()) ""
         }
 
 module Descending =
