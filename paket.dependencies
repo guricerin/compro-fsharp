@@ -1,3 +1,5 @@
 source https://api.nuget.org/v3/index.json
 
 nuget FSharp.Core 4.7.0
+nuget Expecto
+nuget Expecto.FsCheck

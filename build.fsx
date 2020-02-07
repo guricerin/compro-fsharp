@@ -13,9 +13,9 @@ open Fake.Core.TargetOperators
 
 Target.initEnvironment()
 
-Target.create "Clean" (fun _ -> !!"src/Library/bin" ++ "src/Library/obj" |> Shell.cleanDirs)
+Target.create "Clean" (fun _ -> !!"src/**/bin" ++ "src/**/obj" ++ "tests/**/bin" ++ "tests/**/obj" |> Shell.cleanDirs)
 
-Target.create "Build" (fun _ -> !!"src/Library/*.**proj" |> Seq.iter (DotNet.build id))
+Target.create "Build" (fun _ -> !!"src/**/*.**proj" ++ "tests/**/*.**proj" |> Seq.iter (DotNet.build id))
 
 Target.create "All" ignore
 
