@@ -49,33 +49,18 @@ module Edge =
           toward: int
           cost: int }
 
+    let init f t c =
+        { from = f
+          toward = t
+          cost = c }
+
     let que = PriorityQueue<Edge>(fun x y -> x.cost.CompareTo(y.cost))
 
-    let a =
-        { from = 0
-          toward = 1
-          cost = 10 }
-
-    let b =
-        { from = 4
-          toward = 2
-          cost = 3 }
-
-    let c =
-        { from = 2
-          toward = 3
-          cost = 1 }
-
-    let d =
-        { from = 1
-          toward = 4
-          cost = 7 }
-
-    let e =
-        { from = 9
-          toward = 5
-          cost = 9 }
-
+    let a = init 0 1 10
+    let b = init 4 2 3
+    let c = init 2 3 1
+    let d = init 1 4 7
+    let e = init 9 5 9
     let ls = [ a; b; c; d; e ]
 
     for l in ls do
