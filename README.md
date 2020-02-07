@@ -20,3 +20,9 @@ Workspace for competitive programing with F#.
 ```pwsh
 ./test.ps1 (a ~ f)
 ```
+
+## Test
+
+```pwsh
+dotnet run -p .\tests\LibraryTest
+```
