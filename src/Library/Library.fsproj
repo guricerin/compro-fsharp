@@ -12,7 +12,7 @@
     <Compile Include="data-structure/UnionFind.fs" />
     <Compile Include="data-structure/SegmentTree.fs" />
     <Compile Include="data-structure/LazySegTree.fs" />
-    <Compile Include="data-structure/MutablePriorityQueue.fs" />
+    <Compile Include="data-structure/BinaryHeap.fs" />
 
     <Compile Include="graph/GraphUnit.fs" />
     <Compile Include="graph/Dijkstra.fs" />

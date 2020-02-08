@@ -1,8 +1,8 @@
-namespace Compro.DataStructure.PriorityQueue
+namespace Compro.DataStructure.BinaryHeap
 
 open System
 
-/// 優先度付きキュー
+/// 二分ヒープ
 /// 親は必ず子よりも値が 小さいor大きい
 /// 兄弟同士の関係は問わない
 /// 参照: https://ufcpp.net/study/algorithm/col_heap.html
@@ -13,7 +13,7 @@ open System
 /// WARNING: IComparerじゃない関数を指定できてしまう。関数オブジェクトとかいう紛い物じゃないのがほしい...
 
 /// BEGIN CUT HERE
-type PriorityQueue<'T>(compare: 'T -> 'T -> int) =
+type BinaryHeap<'T>(compare: 'T -> 'T -> int) =
     let _heap = ResizeArray<'T>() // 二分ヒープ
     let _compare = compare // 比較関数
     let parent n = (n - 1) / 2
@@ -26,10 +26,10 @@ type PriorityQueue<'T>(compare: 'T -> 'T -> int) =
         _heap.[y] <- tmp
 
     /// ここでの比較は昇順ソートを基準に考えている
-    member self.Compare(x: int, y: int) = (_compare _heap.[x] _heap.[y]) < 0
+    let compare x y = (_compare _heap.[x] _heap.[y]) < 0
 
     /// O(log n)
-    member self.Enque(x: 'T) =
+    member self.Push(x: 'T) =
         let size = _heap.Count
         _heap.Add(x)
         // 親と値を入れ替えていく
@@ -37,7 +37,7 @@ type PriorityQueue<'T>(compare: 'T -> 'T -> int) =
             match k > 0 with
             | true ->
                 let p = parent k
-                match self.Compare(k, p) with
+                match compare k p with
                 | true ->
                     swap k p
                     loop p
@@ -46,7 +46,7 @@ type PriorityQueue<'T>(compare: 'T -> 'T -> int) =
         loop size
 
     /// O(log n)
-    member self.Deque() =
+    member self.Pop() =
         let res = _heap.[0]
         // 末尾ノードを根に持ってくる
         let size = _heap.Count - 1
@@ -60,10 +60,8 @@ type PriorityQueue<'T>(compare: 'T -> 'T -> int) =
                 let right = rightChild k
 
                 let c =
-                    if right < size && self.Compare(right, left)
-                    then right
-                    else left
-                match self.Compare(c, k) with
+                    if right < size && compare right left then right else left
+                match compare c k with
                 | true ->
                     swap c k
                     loop c

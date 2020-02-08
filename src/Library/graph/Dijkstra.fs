@@ -2,7 +2,7 @@ namespace Compro.Graph.Dijkstra
 
 open System
 open Compro.Graph.GraphUnit
-open Compro.DataStructure.PriorityQueue
+open Compro.DataStructure.BinaryHeap
 
 /// ダイクストラ法(単一始点最短路)
 /// 負辺のない単一始点全点間最短路を求める
@@ -19,11 +19,11 @@ module Dijkstra =
         let nedge = graph |> Array.length // ノード数
         let dist = Array.init nedge (fun _ -> inf) // 始点からの距離
         dist.[startNode] <- LanguagePrimitives.GenericZero
-        let heap = PriorityQueue<Edge<'a>>(Edge.less) // コストの低い順に探索する
+        let heap = BinaryHeap<Edge<'a>>(Edge.less) // コストの低い順に探索する
         let start = Edge.initWithoutFrom startNode dist.[startNode]
-        heap.Enque(start)
+        heap.Push(start)
         while heap.Any() do
-            let from = heap.Deque()
+            let from = heap.Pop()
             match dist.[from.toward] < from.cost with
             | true -> ()
             | _ ->
@@ -34,5 +34,5 @@ module Dijkstra =
                     else
                         dist.[edge.toward] <- nextCost
                         let nextEdge = Edge.initWithoutFrom edge.toward dist.[edge.toward]
-                        heap.Enque(nextEdge)
+                        heap.Push(nextEdge)
         dist

@@ -10,7 +10,7 @@
 
     <Compile Include="data-structure/UnionFind.fs" />
     <Compile Include="data-structure/SegmentTree.fs" />
-    <Compile Include="data-structure/PriorityQueue.fs" />
+    <Compile Include="data-structure/BinaryHeap.fs" />
 
     <Compile Include="Program.fs" />
   </ItemGroup>
