@@ -7,22 +7,22 @@ open Compro.DataStructure.UnionFind
 let tests =
     test "ATC001-UnionFind" {
         let uf = UnionFind.init 8
-        let u = UnionFind.unite 1 2 uf
+        let u = uf.Unite(1, 2)
         Expect.isTrue u ""
-        let u = UnionFind.unite 3 2 uf
+        let u = uf.Unite(3, 2)
         Expect.isTrue u ""
-        let f = UnionFind.find 1 3 uf
+        let f = uf.Find(1, 3)
         Expect.isTrue f ""
-        let f = UnionFind.find 1 4 uf
+        let f = uf.Find(1, 4)
         Expect.isFalse f ""
-        let u = UnionFind.unite 2 4 uf
+        let u = uf.Unite(4, 2)
         Expect.isTrue u ""
-        let f = UnionFind.find 4 1 uf
+        let f = uf.Find(1, 4)
         Expect.isTrue f ""
-        let u = UnionFind.unite 4 2 uf
+        let u = uf.Unite(4, 2)
         Expect.isFalse u "すでに連結している"
-        let u = UnionFind.unite 0 0 uf
+        let u = uf.Unite(0, 0)
         Expect.isFalse u "すでに連結している"
-        let f = UnionFind.find 0 0 uf
+        let f = uf.Find(0, 0)
         Expect.isTrue f ""
     }

@@ -11,36 +11,28 @@ type UnionFind =
       /// 各集合の要素数
       size: int array }
 
-[<RequireQualifiedAccess>]
-[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-module UnionFind =
-
-    /// O(n)
-    let init (n: int): UnionFind =
-        let par = Array.init n id
-        let size = Array.init n (fun _ -> 1)
-        { UnionFind.par = par
-          size = size }
-
     /// xの先祖(xが属するグループID)
-    let rec root (x: int) (uf: UnionFind): int =
-        let par = uf.par
-        match x = par.[x] with
-        | true -> x
-        | false ->
-            let px = par.[x]
-            par.[x] <- root px uf
-            par.[x]
+    member self.Root(x: int) =
+        let par = self.par
+
+        let rec loop x =
+            match x = par.[x] with
+            | true -> x
+            | false ->
+                let px = par.[x]
+                par.[x] <- loop px
+                par.[x]
+        loop x
 
     /// 連結判定
     /// ならし O(α(n))
-    let find (x: int) (y: int) (uf: UnionFind) = (root x uf) = (root y uf)
+    member self.Find(x: int, y: int) = self.Root(x) = self.Root(y)
 
     /// xとyを同じグループに併合
     /// ならし O(α(n))
-    let unite (x: int) (y: int) (uf: UnionFind): bool =
-        let par, size = uf.par, uf.size
-        let rx, ry = root x uf, root y uf
+    member self.Unite(x: int, y: int): bool =
+        let par, size = self.par, self.size
+        let rx, ry = self.Root(x), self.Root(y)
         match rx = ry with
         | true -> false // 既に同じグループ
         | _ ->
@@ -54,16 +46,27 @@ module UnionFind =
 
     /// xが属する素集合の要素数
     /// O(1)
-    let size (x: int) (uf: UnionFind): int =
-        let rx = root x uf
-        uf.size.[rx]
+    member self.Size(x: int): int =
+        let rx = self.Root(x)
+        self.size.[rx]
 
     /// 連結成分の個数
     /// O(n)
-    let treeNum (uf: UnionFind): int =
-        let par = uf.par
+    member self.TreeNum: int =
+        let par = self.par
         let mutable cnt = 0
         par
         |> Array.iteri (fun i x ->
             if i = x then cnt <- cnt + 1)
         cnt
+
+[<RequireQualifiedAccess>]
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module UnionFind =
+
+    /// O(n)
+    let init (n: int): UnionFind =
+        let par = Array.init n id
+        let size = Array.init n (fun _ -> 1)
+        { UnionFind.par = par
+          size = size }
