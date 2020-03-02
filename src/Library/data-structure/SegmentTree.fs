@@ -73,24 +73,7 @@ module SegTree =
             nodes.[i] <- f nodes.[lc] nodes.[rc]
         tree
 
-    /// 一点更新
-    /// O(log n)
-    let update k x tree: unit =
-        let k = leafIdx tree k
-        let nodes = tree.nodes
-        nodes.[k] <- tree.change nodes.[k] x
-        // 子から親に伝搬
-        let rec loop k =
-            if k > 0 then
-                let p = parent k
-                let lc, rc = leftChild p, rightChild p
-                nodes.[p] <- tree.merge nodes.[lc] nodes.[rc]
-                loop p
-            else
-                ()
-        loop k
-
-    let rec internal queryCore (a: int) (b: int) (k: int) (l: int) (r: int) tree: 'Monoid =
+    let rec internal foldCore (a: int) (b: int) (k: int) (l: int) (r: int) tree: 'Monoid =
         // 区間外
         if r <= a || b <= l then
             tree.unity
@@ -100,14 +83,34 @@ module SegTree =
         // 一部だけ被覆
         else
             let lc, rc, mid = leftChild k, rightChild k, (l + r) / 2
-            let lv = queryCore a b lc l mid tree
-            let rv = queryCore a b rc mid r tree
+            let lv = foldCore a b lc l mid tree
+            let rv = foldCore a b rc mid r tree
             tree.merge lv rv
 
+
+type SegTree<'Monoid> with
+
+    /// 一点更新
     /// O(log n)
-    let query a b tree: 'Monoid = queryCore a b 0 0 tree.size tree
+    member self.Update(k, x): unit =
+        let k = SegTree.leafIdx self k
+        let nodes = self.nodes
+        nodes.[k] <- self.change nodes.[k] x
+        // 子から親に伝搬
+        let rec loop k =
+            if k > 0 then
+                let p = SegTree.parent k
+                let lc, rc = SegTree.leftChild p, SegTree.rightChild p
+                nodes.[p] <- self.merge nodes.[lc] nodes.[rc]
+                loop p
+            else
+                ()
+        loop k
+
+    /// O(log n)
+    member self.Fold(a: int, b: int): 'Monoid = SegTree.foldCore a b 0 0 self.size self
 
     /// O(1)
-    let get k tree =
-        let k = leafIdx tree k
-        tree.nodes.[k]
+    member self.At(k: int) =
+        let k = SegTree.leafIdx self k
+        self.nodes.[k]
