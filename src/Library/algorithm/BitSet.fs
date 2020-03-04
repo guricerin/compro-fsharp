@@ -3,6 +3,7 @@ namespace Compro.Algorithm.BitSet
 open System
 
 /// BEGIN CUT HERE
+[<Struct>] // F#4.0以下においてはエラー？
 type BitSet =
     { value: uint64
       /// 下位ビット（二進文字列的には右端）から0-indexed
@@ -24,7 +25,7 @@ module BitSet =
         let x = x + (x >>> 32)
         x &&& 0x0000007fUL |> int
 
-    /// 二進表現におけるxのposビット目が立っているか
+    /// 二進表現におけるxのposビット目が1であるか
     let inline test (x: ^a) (pos: int): bool =
         let x = uint64 x
         x &&& (1UL <<< pos) <> 0UL
@@ -82,12 +83,6 @@ module BitSet =
 
 type BitSet with
 
-    static member inline (+) (x: BitSet, y: BitSet) =
-        do x.SameWidth(y)
-        { x with value = x.value + y.value }
-
-    static member inline (+) (x: BitSet, y: int) = { x with value = x.value + uint64 y }
-
     static member inline (<<<) (x: BitSet, shift: int) =
         let v = x.value <<< shift
         let v = v &&& ((1UL <<< x.width) - 1UL)
@@ -121,11 +116,16 @@ type BitSet with
             do self.Check(idx)
             BitSet.test self.value idx
 
-    member self.Popcount() = BitSet.popcount self.value
+    member self.Count() = BitSet.popcount self.value
 
-    member self.Any(): bool = self.Popcount() > 0
+    /// 全てのビットが1になっているか
+    member self.All() = self.width = self.Count()
 
-    member self.None(): bool = self.Popcount() = 0
+    /// いずれかのビットが1になっているか
+    member self.Any(): bool = self.Count() > 0
+
+    /// 全てのビットが0になっているか
+    member self.None(): bool = self.Count() = 0
 
     member private self.Check(pos: int) =
         let width = self.width
@@ -141,14 +141,15 @@ type BitSet with
     member self.Set(pos: int, x: int) =
         do self.Check(pos)
         let v = BitSet.set self.value pos x
-        { self with value = v }
+        BitSet.init self.width v
 
-    member self.Reset() = { self with value = 0UL }
+    member self.Reset() = BitSet.init self.width 0UL
 
     member self.Flip() =
         let v = BitSet.flipAll self.value self.width
-        { self with value = v }
+        BitSet.init self.width v
 
+    /// 任意の位置のビットを反転
     member self.Flip(pos: int) =
         do self.Check(pos)
         let bit =
