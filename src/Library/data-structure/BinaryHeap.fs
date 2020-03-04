@@ -13,8 +13,8 @@ open System
 /// WARNING: IComparerじゃない関数を指定できてしまう。関数オブジェクトとかいう紛い物じゃないのがほしい...
 
 /// BEGIN CUT HERE
-type BinaryHeap<'T>(compare: 'T -> 'T -> int) =
-    let _heap = ResizeArray<'T>() // 二分ヒープ
+type BinaryHeap<'a>(compare: 'a -> 'a -> int) =
+    let _heap = ResizeArray<'a>()
     let _compare = compare // 比較関数
     let parent n = (n - 1) / 2
     let leftChild n = (n <<< 1) + 1
@@ -29,7 +29,7 @@ type BinaryHeap<'T>(compare: 'T -> 'T -> int) =
     let compare x y = (_compare _heap.[x] _heap.[y]) < 0
 
     /// O(log n)
-    member self.Push(x: 'T) =
+    member self.Push(x: 'a) =
         let size = _heap.Count
         _heap.Add(x)
         // 親と値を入れ替えていく
@@ -72,6 +72,6 @@ type BinaryHeap<'T>(compare: 'T -> 'T -> int) =
 
     member self.Any(): bool = _heap.Count > 0
 
-    member self.Peek(): 'T = _heap.[0]
+    member self.Peek(): 'a = _heap.[0]
 
     member self.Dump() = String.Join(" ", _heap)

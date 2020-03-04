@@ -1,6 +1,7 @@
 namespace Compro.Math.ModInt
 
 /// BEGIN CUT HERE
+[<Struct>]
 type ModInt = MVal of int64
 
 [<RequireQualifiedAccess>]

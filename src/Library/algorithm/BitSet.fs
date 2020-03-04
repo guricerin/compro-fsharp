@@ -44,7 +44,7 @@ module BitSet =
     let inline init (w: int) (v: ^a) =
         let v = uint64 v
         let v = v &&& (1UL <<< w) - 1UL // 指定したビット幅を超える分は切り捨てる
-        { BitSet.value = uint64 v
+        { BitSet.value = v
           width = w }
 
     let inline ofInt (v: int) =

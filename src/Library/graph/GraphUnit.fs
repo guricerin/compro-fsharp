@@ -3,10 +3,10 @@ namespace Compro.Graph.GraphUnit
 /// BEGIN CUT HERE
 
 /// グラフにおける重み付きの辺
-type Edge<'T when 'T: comparison> =
+type Edge<'a when 'a: comparison> =
     { from: int
       toward: int
-      cost: 'T }
+      cost: 'a }
 
 [<RequireQualifiedAccess>]
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]

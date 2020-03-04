@@ -16,12 +16,12 @@ module Kruskal =
     /// クラスカル法基本形
     /// n: 頂点数
     /// O(E log V)
-    let inline main (edges: Edges<'a>) (n: int) =
+    let inline main (edges: Edges< ^a >) (n: int) =
         // 辺をコストが小さい順に見ていく貪欲法
         edges.Sort(Edge.less)
         let uni = UnionFind.init n
         let mutable res = LanguagePrimitives.GenericZero
         for e in edges do
-            // 閉路ができなければその辺を採用
+            // 辺を追加した場合に閉路ができなければ、その辺を採用
             if uni.Unite(e.from, e.toward) then res <- res + e.cost
         res
