@@ -52,7 +52,7 @@ module BitSet =
             (log (float v)) / (log 2.)
             |> int
             |> (+) 1
-        init w v
+        init (max 1 w) v
 
     /// 頭が"0b"始まりでもok
     let inline ofBin (str: string) =

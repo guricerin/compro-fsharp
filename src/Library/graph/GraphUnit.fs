@@ -29,6 +29,11 @@ module Edge =
 /// 重み付き辺集合
 type Edges<'a when 'a: comparison> = ResizeArray<Edge<'a>>
 
+[<RequireQualifiedAccess>]
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module Edges =
+    let inline init (n: int): Edges<'a> = ResizeArray<Edge<'a>>(n)
+
 /// 重み付きグラフ
 /// g.[a] => ノードaに直接繋がっている辺群(隣接リスト)
 type WeightedGraph<'a when 'a: comparison> = Edges<'a> array

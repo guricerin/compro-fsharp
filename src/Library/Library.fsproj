@@ -17,6 +17,7 @@
 
     <Compile Include="graph/GraphUnit.fs" />
     <Compile Include="graph/Dijkstra.fs" />
+    <Compile Include="graph/Kruskal.fs" />
 
     <Compile Include="Util.fs" />
     <Compile Include="Library.fs" />
