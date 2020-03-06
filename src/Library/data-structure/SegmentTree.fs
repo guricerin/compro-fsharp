@@ -73,9 +73,9 @@ module SegTree =
             nodes.[i] <- f nodes.[lc] nodes.[rc]
         tree
 
-    let rec internal foldCore (a: int) (b: int) (k: int) (l: int) (r: int) tree: 'Monoid =
+    let rec internal fold (a: int) (b: int) (k: int) (l: int) (r: int) tree: 'Monoid =
         // 区間外
-        if r <= a || b <= l then
+        if b <= l || r <= a then
             tree.unity
         // 完全被覆
         elif a <= l && r <= b then
@@ -83,8 +83,8 @@ module SegTree =
         // 一部だけ被覆
         else
             let lc, rc, mid = leftChild k, rightChild k, (l + r) / 2
-            let lv = foldCore a b lc l mid tree
-            let rv = foldCore a b rc mid r tree
+            let lv = fold a b lc l mid tree
+            let rv = fold a b rc mid r tree
             tree.merge lv rv
 
 
@@ -107,8 +107,9 @@ type SegTree<'Monoid> with
                 ()
         loop k
 
+    /// 半開区間[l, r)の演算結果を取得
     /// O(log n)
-    member self.Fold(a: int, b: int): 'Monoid = SegTree.foldCore a b 0 0 self.size self
+    member self.Fold(a: int, b: int): 'Monoid = SegTree.fold a b 0 0 self.size self
 
     /// O(1)
     member self.At(k: int) =
