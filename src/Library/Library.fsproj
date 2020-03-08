@@ -10,7 +10,7 @@
     <Compile Include="algorithm/Permutation.fs" />
     <Compile Include="algorithm/BitSet.fs" />
 
-    <Compile Include="data-structure/Deque.fs" />
+    <Compile Include="data-structure/VecDeque.fs" />
     <Compile Include="data-structure/UnionFind.fs" />
     <Compile Include="data-structure/SegmentTree.fs" />
     <Compile Include="data-structure/LazySegTree.fs" />
