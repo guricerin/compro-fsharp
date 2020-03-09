@@ -36,18 +36,18 @@ and Change<'a> = 'a -> 'a -> 'a
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module SegTree =
 
-    let internal sizeAndHeight n =
+    let inline sizeAndHeight n =
         let rec loop sAcc hAcc =
             if sAcc < n then loop (sAcc <<< 1) (hAcc + 1) else (sAcc, hAcc)
         loop 1 0
 
-    let inline internal parent i = (i - 1) / 2
-    let inline internal leftChild i = (i <<< 1) + 1
-    let inline internal rightChild i = (i <<< 1) + 2
-    let inline internal leafIdx tree k = k + tree.size - 1
+    let inline parent i = (i - 1) / 2
+    let inline leftChild i = (i <<< 1) + 1
+    let inline rightChild i = (i <<< 1) + 2
+    let inline leafIdx tree k = k + tree.size - 1
 
     /// O(n)
-    let init (n: int) (unity: 'Monoid) (f: Merge<'Monoid>) (g: Change<'Monoid>) =
+    let inline init (n: int) (unity: 'Monoid) (f: Merge<'Monoid>) (g: Change<'Monoid>) =
         let size, height = sizeAndHeight n
         let nodes = Array.init (size * 2 - 1) (fun _ -> unity)
         { SegTree.size = size
@@ -58,7 +58,7 @@ module SegTree =
           change = g }
 
     /// O(n)
-    let build (sq: 'Monoid seq) unity f g =
+    let inline build (sq: 'Monoid seq) unity f g =
         let sq = Array.ofSeq sq
         let len = Array.length sq
         let tree = init len unity f g
@@ -73,7 +73,7 @@ module SegTree =
             nodes.[i] <- f nodes.[lc] nodes.[rc]
         tree
 
-    let rec internal fold (a: int) (b: int) (k: int) (l: int) (r: int) tree: 'Monoid =
+    let rec fold (a: int) (b: int) (k: int) (l: int) (r: int) tree: 'Monoid =
         // 区間外
         if b <= l || r <= a then
             tree.unity
@@ -92,7 +92,7 @@ type SegTree<'Monoid> with
 
     /// 一点更新
     /// O(log n)
-    member self.Update(k, x): unit =
+    member inline self.Update(k, x): unit =
         let k = SegTree.leafIdx self k
         let nodes = self.nodes
         nodes.[k] <- self.change nodes.[k] x
@@ -109,9 +109,9 @@ type SegTree<'Monoid> with
 
     /// 半開区間[l, r)の演算結果を取得
     /// O(log n)
-    member self.Fold(a: int, b: int): 'Monoid = SegTree.fold a b 0 0 self.size self
+    member inline self.Fold(a: int, b: int): 'Monoid = SegTree.fold a b 0 0 self.size self
 
     /// O(1)
-    member self.At(k: int) =
+    member inline self.At(k: int) =
         let k = SegTree.leafIdx self k
         self.nodes.[k]

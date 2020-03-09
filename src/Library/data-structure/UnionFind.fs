@@ -12,7 +12,7 @@ type UnionFind =
       size: int array }
 
     /// xの先祖(xが属するグループID)
-    member self.Root(x: int) =
+    member inline self.Root(x: int) =
         let par = self.par
 
         let rec loop x =
@@ -26,11 +26,11 @@ type UnionFind =
 
     /// 連結判定
     /// ならし O(α(n))
-    member self.Find(x: int, y: int) = self.Root(x) = self.Root(y)
+    member inline self.Find(x: int, y: int) = self.Root(x) = self.Root(y)
 
     /// xとyを同じグループに併合
     /// ならし O(α(n))
-    member self.Unite(x: int, y: int): bool =
+    member inline self.Unite(x: int, y: int): bool =
         let par, size = self.par, self.size
         let rx, ry = self.Root(x), self.Root(y)
         match rx = ry with
@@ -46,13 +46,13 @@ type UnionFind =
 
     /// xが属する素集合の要素数
     /// O(1)
-    member self.Size(x: int): int =
+    member inline self.Size(x: int): int =
         let rx = self.Root(x)
         self.size.[rx]
 
     /// 連結成分の個数
     /// O(n)
-    member self.TreeNum: int =
+    member inline self.TreeNum: int =
         let par = self.par
         let mutable cnt = 0
         par
@@ -65,7 +65,7 @@ type UnionFind =
 module UnionFind =
 
     /// O(n)
-    let init (n: int): UnionFind =
+    let inline init (n: int): UnionFind =
         let par = Array.init n id
         let size = Array.init n (fun _ -> 1)
         { UnionFind.par = par
