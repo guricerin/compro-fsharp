@@ -25,11 +25,13 @@ type VecDeque<'a> =
 
     member inline self.Any() = self.IsEmpty() |> not
 
+    /// O(1)
     member inline self.Front =
         match self.Any() with
         | true -> self.buf.[self.head]
         | _ -> raise <| SystemException("deque is empty")
 
+    /// O(1)
     member inline self.Back =
         match self.Any() with
         | true -> self.buf.[self.tail]
@@ -52,7 +54,7 @@ type VecDeque<'a> =
            self.tail <- self.nelem - 1
            self.buf <- buf'
 
-    /// O(1)
+    /// ならしO(1)
     member inline self.PushFront(x: 'a) =
         if self.NeedToExtend() then do self.Extend()
         let head = self.PrevIdx(self.head)
@@ -60,7 +62,7 @@ type VecDeque<'a> =
            self.head <- head
            self.buf.[head] <- x
 
-    /// O(1)
+    /// ならしO(1)
     member inline self.PushBack(x: 'a) =
         if self.NeedToExtend() then do self.Extend()
         let tail = self.NextIdx(self.tail)
