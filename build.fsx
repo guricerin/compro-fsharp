@@ -1,8 +1,7 @@
-#r "paket:
-nuget Fake.DotNet.Cli
-nuget Fake.IO.FileSystem
-nuget Fake.Core.Target //"
+#if !FAKE
 #load ".fake/build.fsx/intellisense.fsx"
+#r "netstandard"
+#endif
 
 open Fake.Core
 open Fake.DotNet
@@ -10,8 +9,17 @@ open Fake.IO
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 open Fake.Core.TargetOperators
+open Fake.DotNet.Testing
 
 Target.initEnvironment()
+
+let testProjects = [ "LibraryTest" ]
+
+Target.create "Test" (fun _ ->
+    [ for x in testProjects -> sprintf "tests/%s/bin/Release/**/%s.dll" x x ]
+    |> function
+    | [] -> printfn "There is no test project"
+    | x :: xs -> Seq.fold (++) (!!x) xs |> Expecto.run id)
 
 Target.create "Clean" (fun _ -> !!"src/**/bin" ++ "src/**/obj" ++ "tests/**/bin" ++ "tests/**/obj" |> Shell.cleanDirs)
 
