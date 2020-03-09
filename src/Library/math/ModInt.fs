@@ -7,13 +7,14 @@ type ModInt = MVal of int64
 [<RequireQualifiedAccess>]
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>] // 型名とモジュール名の重複を許す
 module ModInt =
-    let modulo = (int64 1e9) + 7L
+    [<Literal>]
+    let Modulo = 1000000007L
 
     let inline init (x: ^a): ModInt =
-        let x = (int64 x) % modulo
+        let x = (int64 x) % Modulo
         match x with
-        | _ when x < 0L -> MVal(x + modulo)
-        | _ when x >= modulo -> MVal(x - modulo)
+        | _ when x < 0L -> MVal(x + Modulo)
+        | _ when x >= Modulo -> MVal(x - Modulo)
         | _ -> MVal x
 
     let zero = init 0
@@ -28,7 +29,7 @@ module ModInt =
     /// 拡張ユークリッドの互除法
     /// a (mod m) における逆元 a^-1
     let inline inverse (MVal a): ModInt =
-        let mutable (a, b, u, v) = (a, modulo, 1L, 0L)
+        let mutable (a, b, u, v) = (a, Modulo, 1L, 0L)
         while b > 0L do
             let t = a / b
             a <- a - (t * b)
@@ -78,18 +79,30 @@ type ModInt with
         let v = ModInt.value x
         ModInt.init (-v)
 
-type BiCoef =
+type BinomialCoefficient =
     { modulo: int64
       fact: ModInt array
       inv: ModInt array
       finv: ModInt array }
 
+    // nCk
+    member inline self.Com(n: int, k: int) =
+        let n, k = int n, int k
+        let zero = ModInt.zero
+        match n, k with
+        | _ when n < k -> zero
+        | _ when n < 0 -> zero
+        | _ when k < 0 -> zero
+        | _ ->
+            let res = self.fact.[n] * self.finv.[k] * self.finv.[n - k]
+            res
+
 [<RequireQualifiedAccess>]
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-module BiCoef =
+module BinomialCoefficient =
 
-    let inline init (n: ^a) (modulo: ^b): BiCoef =
-        let n = int n
+    // nはせいぜい10^6ぐらいが限界
+    let inline init (n: int) (modulo: ^a): BinomialCoefficient =
         let one = ModInt.one
         let fact = Array.init n (fun _ -> one)
         let inv = Array.init n (fun _ -> one)
@@ -100,18 +113,7 @@ module BiCoef =
             inv.[i] <- -inv.[m % i] * (ModInt.init (m / i))
             finv.[i] <- finv.[i - 1] * inv.[i]
 
-        { BiCoef.modulo = modulo |> int64
+        { BinomialCoefficient.modulo = modulo |> int64
           fact = fact
           inv = inv
           finv = finv }
-
-    let inline com (n: ^a) (k: ^b) (bicoef: BiCoef) =
-        let n, k = int n, int k
-        let zero = ModInt.zero
-        match n, k with
-        | _ when n < k -> zero
-        | _ when n < 0 -> zero
-        | _ when k < 0 -> zero
-        | _ ->
-            let res = bicoef.fact.[n] * bicoef.finv.[k] * bicoef.finv.[n - k]
-            res

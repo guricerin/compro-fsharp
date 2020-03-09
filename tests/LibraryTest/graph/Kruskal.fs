@@ -22,7 +22,7 @@ let ``AOJ GRL 2_A Sample`` =
               Edge.init 4 5 6 ]
         for l in ls do
             edges.Add(l)
-        let actual = Kruskal.main edges v
+        let actual = Kruskal.kruskal edges v
         let expect = 5
         Expect.equal actual expect "5"
     }
@@ -59,7 +59,7 @@ let ``ABC065 D`` =
             let e = Edge.init u v cost
             edges.Add(e)
 
-        let actual = Kruskal.main edges n
+        let actual = Kruskal.kruskal edges n
         let expect = 8L
         Expect.equal actual expect ""
     }

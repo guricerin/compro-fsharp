@@ -16,7 +16,7 @@ module Kruskal =
     /// クラスカル法基本形
     /// n: 頂点数
     /// O(E log V)
-    let inline main (edges: Edges< ^a >) (n: int) =
+    let inline kruskal (edges: Edges< ^a >) (n: int) =
         // 辺をコストが小さい順に見ていく貪欲法
         edges.Sort(Edge.less)
         let uni = UnionFind.init n
