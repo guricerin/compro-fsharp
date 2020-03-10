@@ -19,16 +19,6 @@ module Base =
             Expect.throws (fun _ -> que.PopFront() |> ignore) "deque is empty"
         }
 
-    [<Tests>]
-    let ``ofSeq`` =
-        test "ofSeq" {
-            let ls = [ -1000 .. 1000 ]
-            let q: VecDeque<int> = VecDeque.build ls
-            let expect = String.Join("", ls)
-            let actual = String.Join("", VecDeque.ofSeq q)
-            Expect.equal expect actual ""
-        }
-
 module Random =
     let config = { FsCheckConfig.defaultConfig with maxTest = 100 }
 
@@ -51,3 +41,14 @@ module Random =
             for i in 0 .. Array.length xs - 1 do
                 let x = q.PopBack()
                 Expect.equal xs.[i] x ""
+
+    [<Tests>]
+    let ``ofSeq`` =
+        testProperty "ofSeq" <| fun (xs: int array) ->
+            if Array.isEmpty xs then
+                ()
+            else
+                let q: VecDeque<int> = VecDeque.build xs
+                let expect = String.Join("", xs)
+                let actual = String.Join("", VecDeque.ofSeq q)
+                Expect.equal expect actual ""

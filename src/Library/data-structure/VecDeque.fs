@@ -88,15 +88,18 @@ type VecDeque<'a> =
 
     interface IEnumerable<'a> with
         member self.GetEnumerator() =
-            seq {
-                let mask = self.Mask
-                let mutable i = self.head
-                while i <> self.tail do
-                    yield self.buf.[i]
-                    i <- (i + 1) &&& mask
-                yield self.buf.[self.tail]
-            }
-            |> fun x -> x.GetEnumerator()
+            if self.IsEmpty() then
+                raise <| SystemException("deque is empty")
+            else
+                seq {
+                    let mask = self.Mask
+                    let mutable i = self.head
+                    while i <> self.tail do
+                        yield self.buf.[i]
+                        i <- (i + 1) &&& mask
+                    yield self.buf.[self.tail]
+                }
+                |> fun x -> x.GetEnumerator()
 
     interface System.Collections.IEnumerable with
         member self.GetEnumerator() = (self :> IEnumerable<'a>).GetEnumerator() :> System.Collections.IEnumerator
